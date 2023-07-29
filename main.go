@@ -31,7 +31,7 @@ func main() {
 
 	streamCh = make(chan rxgo.Item)
 
-	timeoutCtx, cancelTimeout := context.WithTimeout(ctx, 20*time.Second)
+	timeoutCtx, cancelTimeout := context.WithTimeout(ctx, time.Hour*24)
 
 	observable := rxgo.FromEventSource(streamCh, rxgo.WithBackPressureStrategy(rxgo.Drop))
 
@@ -52,6 +52,7 @@ func main() {
 	case <-timeoutCtx.Done():
 		fmt.Println("timeout done")
 		close(streamCh)
+		//delete the observer node every 24h
 	case <-ctx.Done():
 		//parent context done
 		fmt.Println("parent context done")
