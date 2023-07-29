@@ -52,7 +52,7 @@ func main() {
 	case <-timeoutCtx.Done():
 		fmt.Println("timeout done")
 		close(streamCh)
-		//delete the observer node every 24h
+		//delete the observer node in streams map
 	case <-ctx.Done():
 		//parent context done
 		fmt.Println("parent context done")
@@ -85,6 +85,7 @@ func hello(writer http.ResponseWriter, request *http.Request) {
 		streamCh <- rxgo.Of(string(body))
 	} else {
 		fmt.Println("Channel closed!")
+		// we need to recreate stream in the map
 	}
 
 	err = json.NewEncoder(writer).Encode(response)
